@@ -1,7 +1,7 @@
 /* FAKE DATA ONLY. example.com domains, invented organisations, 555 numbers. */
 (function () {
   var BW = "Brightwater Home Care (fake client)";
-  var NM = "Nacke Media (demo)";
+  var NM = "Harborline Studio (demo)";
   var tactics = [
     { id: "resource-page-ask", tier: "green", status: "running" },
     { id: "competitor-link-gap", tier: "green", status: "running" },
@@ -36,8 +36,8 @@
 
   // attempt: site, date, action, minutes, cash, outcome
   var raw = [
-    ["pinecrest-eldercare", "2026-10-20", "email", 45, 0, "sent"], ["pinecrest-eldercare", "2026-10-28", "follow-up", 20, 0, "won"],
-    ["lakeside-aging-council", "2026-10-22", "email", 40, 0, "sent"], ["lakeside-aging-council", "2026-11-01", "follow-up", 20, 0, "won"],
+    ["pinecrest-eldercare", "2026-07-12", "email", 45, 0, "sent"], ["pinecrest-eldercare", "2026-07-20", "follow-up", 20, 0, "won"],
+    ["lakeside-aging-council", "2026-07-14", "email", 40, 0, "sent"], ["lakeside-aging-council", "2026-07-24", "follow-up", 20, 0, "won"],
     ["valleyview-caregivers", "2026-10-25", "email", 35, 0, "sent"], ["valleyview-caregivers", "2026-11-03", "follow-up", 15, 0, "won"],
     ["northgate-seniors-guide", "2026-10-27", "email", 40, 0, "sent"], ["northgate-seniors-guide", "2026-11-05", "follow-up", 15, 0, "declined"],
     ["maple-court-living", "2026-12-01", "email", 50, 0, "sent"],
@@ -57,24 +57,25 @@
   ];
   var tacOf = {}, cliOf = {};
   sites.forEach(function (s) { tacOf[s.id] = s.tactic; cliOf[s.id] = s.client; });
+  raw = raw.slice().sort(function (a, b) { return a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0; });
   var attempts = raw.map(function (r, i) {
     return { id: "A-" + ("00" + (i + 1)).slice(-3), site: r[0], tactic: tacOf[r[0]], client: cliOf[r[0]], date: r[1], action: r[2], minutes: r[3], cash: r[4], outcome: r[5], gate: "card t_demo" + ("00" + (i + 1)).slice(-3) };
   });
 
   // link: site, page path, anchor, rel, first seen, live now, live at 90 days (null = not yet 90 days old)
   var L = [
-    ["pinecrest-eldercare", "/resources/partners", "home care guide", "follow", "2026-10-29", true, true],
-    ["lakeside-aging-council", "/links", "Brightwater Home Care", "follow", "2026-11-02", false, false],
+    ["pinecrest-eldercare", "/resources/partners", "home care guide", "follow", "2026-07-21", true, true],
+    ["lakeside-aging-council", "/links", "Brightwater Home Care", "follow", "2026-07-25", false, false],
     ["valleyview-caregivers", "/resources/guides", "trusted local home care", "follow", "2026-11-04", true, null],
-    ["summit-wellness-review", "/best-of/seo-partners", "Nacke Media", "nofollow", "2026-11-11", true, null],
+    ["summit-wellness-review", "/best-of/seo-partners", "Harborline Studio", "nofollow", "2026-11-11", true, null],
     ["orchard-tech-weekly", "/issues/204", "SEO and web design partner", "follow", "2026-11-13", true, null],
-    ["state-vendor-portal", "/vendors/registered", "Nacke Media", "follow", "2026-11-21", true, null],
-    ["county-business-list", "/directory/marketing", "Nacke Media", "follow", "2026-11-23", true, null],
+    ["state-vendor-portal", "/vendors/registered", "Harborline Studio", "follow", "2026-11-21", true, null],
+    ["county-business-list", "/directory/marketing", "Harborline Studio", "follow", "2026-11-23", true, null],
     ["goldleaf-living-picks", "/picks/home-care", "Brightwater Home Care", "nofollow", "2026-11-25", true, null]
   ];
   var links = L.map(function (r, i) {
     var cli = cliOf[r[0]];
-    return { id: "L-" + ("00" + (i + 1)).slice(-3), site: r[0], tactic: tacOf[r[0]], client: cli, page: "https://" + r[0] + ".example.com" + r[1], target: cli.indexOf("Nacke") === 0 ? "https://nackemedia.example.com/" : "https://brightwater-care.example.com/", anchor: r[2], rel: r[3], first: r[4], live: r[5], live90: r[6] };
+    return { id: "L-" + ("00" + (i + 1)).slice(-3), site: r[0], tactic: tacOf[r[0]], client: cli, page: "https://" + r[0] + ".example.com" + r[1], target: cli.indexOf("Harborline") === 0 ? "https://harborline-studio.example.com/" : "https://brightwater-care.example.com/", anchor: r[2], rel: r[3], first: r[4], live: r[5], live90: r[6] };
   });
 
   window.DATA = { tactics: tactics, sites: sites, attempts: attempts, links: links, asof: "2026-12-06", client: BW, contact: "555-0142" };

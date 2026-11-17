@@ -23,7 +23,7 @@ td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top;overfl
 tr.click{cursor:pointer}
 tr.click:hover td,tr.sel td{background:#eef9fe}
 .num{text-align:right}
-.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;border:1px solid var(--line2);background:#fff;white-space:nowrap}
+.pill{display:inline-block;flex-shrink:0;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;border:1px solid var(--line2);background:#fff;white-space:nowrap}
 .green{color:var(--green);border-color:#9fd5b5;background:#effaf3}
 .open{color:var(--navy2);border-color:#a9c4e0;background:#eef4fb}
 .won{color:var(--green);border-color:#9fd5b5;background:#effaf3}
@@ -54,6 +54,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 16px 30px;font-size:12px;color:v
  td{border:0;padding:4px 0;display:flex;justify-content:space-between;gap:10px;text-align:right}
  td::before{content:attr(data-l);font-weight:600;color:var(--navy);text-align:left;flex:0 0 42%}
  td>*{min-width:0}
+ .cell{flex:1 1 auto;min-width:0;text-align:right}
  .num{text-align:right}
  tr.is-dead td,tr.is-dnc td,tr.click:hover td,tr.sel td{background:transparent}
  tr.is-dead{background:#fdf7f6}tr.is-dnc{background:#f1f2f6}tr.sel{background:#eef9fe}

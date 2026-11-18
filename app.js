@@ -104,14 +104,21 @@
       var b = order[i], gap = top[b] - m.bp[b];
       if (gap <= 0 && b !== "natural") continue;
       if (b !== "natural") {
-        var capHi = BANDS[type][b][1], after = (m.bc[b] + 1) * 100 / (m.n + 1);
-        if (after > capHi) { skipped.push(b); continue; }
+        var after = (m.bc[b] + 1) * 100 / (m.n + 1);
+        if (bandState(type, b, after) === "over") { skipped.push(b); continue; }
       }
-      var why = "Furthest under the top-3 mix: " + BUCKETS.filter(function (x) { return x[0] === b; })[0][1].toLowerCase() + " (" + Math.round(m.bp[b]) + "% now, " + top[b] + "% top-3).";
-      if (skipped.length) why = skipped.map(function (s) { return (s === "exact" ? "Exact match" : "Blended") + " is under the top-3 mix but one more Link would pass the top of its band (" + BANDS[type][s][1] + "%)"; }).join("; ") + ", so " + (skipped.length > 1 ? "they move" : "it moves") + " on. " + why;
+      var bname = BUCKETS.filter(function (x) { return x[0] === b; })[0][1].toLowerCase(), why;
+      var skipTxt = skipped.map(function (s) { return (s === "exact" ? "Exact match" : "Blended") + " is under the top-3 mix but one more Link would pass the top of its band (" + BANDS[type][s][1] + "%)"; }).join("; ");
+      if (gap > 0) {
+        why = "Furthest under the top-3 mix: " + bname + " (" + Math.round(m.bp[b]) + "% now, " + top[b] + "% top-3).";
+        if (skipped.length) why = skipTxt + ", so " + (skipped.length > 1 ? "they move" : "it moves") + " on. " + why;
+      } else if (skipped.length) {
+        why = (skipped.length > 1 ? "Exact match and blended would both pass the top of their band" : skipTxt) + ", so natural is the only bucket left.";
+      } else {
+        why = "Every bucket is at or over the top-3 mix, so natural, which has the most room.";
+      }
       return { cls: leastUsed(b), why: why + " Least used class inside it." };
     }
-    return { cls: leastUsed("natural"), why: "Every capped bucket would pass its band, so natural." };
   }
 
   function anchorPanel(p) {
@@ -168,7 +175,7 @@
         '<p class="desc" id="tdesc">' + esc(t.desc) + "</p>" +
         '<p class="btnrow"><button class="btn" id="how" aria-expanded="' + open + '" aria-controls="howpanel">' + (open ? "Hide how it works" : "How it works") + "</button></p>" +
         (open ? '<div class="how" id="howpanel"><p class="note">Step by step, one box per step: what happens, who runs it (the seat), and where it can fail. Each failure names the scorecard number it moves.</p>' +
-          '<div class="frame" tabindex="0" aria-label="Diagram, scrolls sideways on a phone"><iframe title="How it works: ' + esc(t.title) + '" src="how/' + t.id + '.html" loading="lazy"></iframe></div>' +
+          '<div class="frame" tabindex="0" aria-label="Diagram, scrolls sideways on a phone"><iframe title="How it works: ' + esc(t.title) + '" src="how/' + t.id + '.html?embed=1" loading="lazy"></iframe></div>' +
           '<p class="btnrow"><a class="lnk" href="how/' + t.id + '.html" target="_blank" rel="noopener">Open full size in a new tab</a> <button class="btn" id="howclose">Close diagram</button></p></div>' : "") +
         "<h3>Attempts for " + esc(t.id) + "</h3>" +
         (s.at.length ? '<table><thead><tr><th>Attempt</th><th>Date</th><th>Site</th><th>Action</th><th class="num">Minutes</th><th class="num">Cash</th><th>Outcome</th><th>Gate</th></tr></thead><tbody>' +
